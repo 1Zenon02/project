@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Work Calendar</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'calendar_app/styles.css' %}">
+</head>
+<body>
+    <h1>Work Calendar</h1>
+    <a href="{% url 'add_event_view' 1 month year %}">Add New Event</a>
+    
+    <h2>{{ month }}/{{ year }}</h2>
+    <table>
+        <tr>
+            <th>Sun</th>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wed</th>
+            <th>Thu</th>
+            <th>Fri</th>
+            <th>Sat</th>
+        </tr>
+        {% for week in month_days %}
+        <tr>
+            {% for day in week %}
+            <td>
+                {% if day != 0 %}
+                <a href="{% url 'add_event_view' day month year %}">{{ day }}</a>
+                <ul>
+                    {% for event in events_dict|get_item:day %}
+                    <li>{{ event.title }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="{% url 'calendar_view' %}">Back to Calendar</a>
+</body>
+</html>
