@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ month_name }} {{ year }}</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'calendar_app/styles.css' %}">
+</head>
+<body>
+    <h1>{{ month_name }} {{ year }}</h1>
+    <table>
+        <tr>
+            <th>Sun</th>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wed</th>
+            <th>Thu</th>
+            <th>Fri</th>
+            <th>Sat</th>
+        </tr>
+        {% for week in calendar_days|slice:":7" %}
+        <tr>
+            {% for day in week %}
+            <td>
+                {% if day.date.day %}
+                <a href="{% url 'add_event_view' day.date.day day.date.month day.date.year %}">
+                    {{ day.date.day }}
+                </a>
+                {% else %}
+                &nbsp;
+                {% endif %}
+                <ul>
+                    {% for event in day.events %}
+                    <li>{{ event.title }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="{% url 'calendar_view' %}">Back to Calendar</a>
+</body>
+</html>
